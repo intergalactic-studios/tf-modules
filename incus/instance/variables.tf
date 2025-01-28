@@ -56,9 +56,3 @@ variable "ephemeral" {
   type        = bool
   default     = false  
 }
-
-variable "cloud_init_user_data" {
-  description = "The cloud-init user data"
-  type        = string
-  default     = file("cloud-init-user-data.yaml")
-}

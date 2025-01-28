@@ -1,4 +1,4 @@
-resource "incus_instance" "instance" {
+resource "incus_instance" "uptime_kuma" {
   name        = var.instance_name
   type        = var.instance_type
   image       = var.image
@@ -8,7 +8,7 @@ resource "incus_instance" "instance" {
   config = {
     "limits.cpu"    = var.cpu_cores
     "limits.memory" = "${var.memory}MB"
-    "cloud-init.user-data" = file("${var.cloud_init_user_data}")
+    "cloud-init.user-data" = file("${path.module}/cloud-init-user-data.yml")
   }
 
   device {
@@ -25,7 +25,7 @@ resource "incus_instance" "instance" {
     name = "eth0"
     type = "nic"
     properties = {
-      network = "incusbr0"
+      network = "incusbr1"
     }
   }
 }
