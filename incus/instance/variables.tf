@@ -1,7 +1,6 @@
 variable "instance_name" {
   description = "Name of the Incus instance"
   type        = string
-  default     = "uptime-kuma-instance"
 }
 
 variable "instance_type" {
@@ -25,25 +24,16 @@ variable "cpu_cores" {
 variable "memory" {
   description = "Memory size in MB"
   type        = number
-  default     = 1024
-}
-
-variable "disk_size" {
-  description = "Disk size in GB"
-  type        = number
-  default     = 10
 }
 
 variable "docker_image" {
-  description = "Docker image for Uptime Kuma"
+  description = "Docker image"
   type        = string
-  default     = "louislam/uptime-kuma:latest"
 }
 
 variable "port" {
-  description = "Port to expose Uptime Kuma"
+  description = "Port to expose"
   type        = number
-  default     = 3001
 }
 variable "profiles" {
   description = "The profiles of the network"
@@ -55,4 +45,14 @@ variable "ephemeral" {
   description = "Whether the instance is ephemeral"
   type        = bool
   default     = false  
+}
+
+variable "description" {
+  description = "Description of the instance"
+  type        = string
+}
+
+variable "running" {
+  description = "Whether the instance is running"
+  type        = bool  
 }
