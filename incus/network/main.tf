@@ -1,4 +1,4 @@
-resource "incus_network" "new_default" {
+resource "incus_network" "network" {
   name = var.name
   type = var.type
   description = var.description
