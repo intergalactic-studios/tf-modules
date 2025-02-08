@@ -9,12 +9,13 @@ resource "incus_instance" "instance" {
   running     = var.running
 
   file {
-    name = "Dockerfile"
+    target_path = "/root/Dockerfile"
     content = <<-EOF
       FROM ${var.docker_image}
       EXPOSE ${var.port}
     EOF
   }
+
 
   config = {
     "limits.cpu"    = var.cpu_cores
