@@ -22,11 +22,14 @@ resource "incus_instance" "instance" {
     "cloud-init.user-data" = file("${path.module}/cloud-init-user-data.yml")
   }
 
-  device {
-    for_each = { for device in jsondecode(file("${path.module}/devices.json")) : device.name => device }
-      name       = each.value.name
-      type       = each.value.type
-      properties = each.value.properties
+  dynamic "device" {
+    for_each = jsondecode(file("${path.module}/devices.json"))
+
+    content {
+      name       = device.value.name
+      type       = device.value.type
+      properties = device.value.properties
+    }
   }
 }
 
