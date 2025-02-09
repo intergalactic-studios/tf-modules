@@ -15,6 +15,6 @@ resource "null_resource" "test_script" {
   # Runs when you destroy Terraform
   provisioner "local-exec" {
     when    = destroy
-    command = "rm -f /tmp/testfile.txt"
+    command = "rm -f /home/intergalactic/testfile.txt"
   }
 }
