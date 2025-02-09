@@ -2,19 +2,38 @@ resource "incus_network" "network" {
   name = var.name
   type = var.type
   description = var.description
-  config = var.config
+  #config = var.config
 }
 
+resource "null_resource" "nftables_setup" {
+  depends_on = [incus_network.network]  # Ensures this runs after the network creation
 
-resource "null_resource" "test_script" {
-  # Runs when you apply Terraform
   provisioner "local-exec" {
-    command = "echo 'Hello, Terraform!' > /home/intergalactic/testfile.txt"
+    command = <<EOT
+      # Wait for the network to be up and create necessary routes
+      sudo ip route add 192.168.2.0/24 dev incusbr1 proto static
+      sudo nft add table inet incus_nat
+      sudo nft add chain inet incus_nat postrouting { type nat hook postrouting priority 100 \; }
+      sudo nft add rule inet incus_nat postrouting ip saddr 192.168.2.0/24 oifname "eno1" masquerade
+
+      sudo nft add table inet incus_filter
+      sudo nft add chain inet incus_filter forward { type filter hook forward priority 0 \; policy drop \; }
+      sudo nft add rule inet incus_filter forward ct state related,established accept
+      sudo nft add rule inet incus_filter forward iifname "eno1" oifname "incusbr1" accept
+      sudo nft add rule inet incus_filter forward iifname "incusbr1" oifname "eno1" ip daddr 192.168.1.90 accept
+      sudo nft add rule inet incus_filter forward iifname "incusbr1" oifname "eno1" drop
+
+      sudo nft list ruleset > /etc/nftables.rules
+      sudo systemctl enable nftables-restore
+    EOT
   }
 
-  # Runs when you destroy Terraform
   provisioner "local-exec" {
     when    = destroy
-    command = "rm -f /home/intergalactic/testfile.txt"
+    command = <<EOT
+      sudo nft delete table inet incus_nat
+      sudo nft delete table inet incus_filter
+      sudo rm -f /etc/nftables.rules
+    EOT
   }
 }

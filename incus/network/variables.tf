@@ -18,8 +18,8 @@ variable "type" {
         error_message = "The type must be one of 'bridge', 'macvlan', 'sriov', 'ovn', or 'physical'."
     }
 }
-variable "config" {
-  description = "The configuration of the network"
-  type        = map(string)
+# variable "config" {
+#   description = "The configuration of the network"
+#   type        = map(string)
   
-}
+# }
