@@ -18,8 +18,8 @@ resource "null_resource" "routing" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo ip route add 192.168.2.0/24 dev incusbr1",
-      "sudo ip route add 192.168.1.0/24 dev eno1"  # Adjust eno1 if using a different interface
+      "sudo ip route show 192.168.2.0/24 || sudo ip route add 192.168.2.0/24 dev incusbr1",
+      "sudo ip route show 192.168.1.0/24 || sudo ip route add 192.168.1.0/24 dev eno1"  # Adjust eno1 if needed
     ]
 
     when = create  # Run the inline commands during creation
@@ -40,3 +40,17 @@ resource "null_resource" "routing" {
 
   depends_on = [incus_network.network]
 }
+
+# Add route to this network on the local computer
+
+# resource "null_resource" "routing" {
+#   provisioner "local-exec" {
+#     command = "sudo route -n add 192.168.2.0/24 192.168.1.90"
+#   }
+
+#   triggers = {
+#     always_run = "${timestamp()}"
+#   }
+
+#   depends_on = [incus_network.network]
+# }
