@@ -1,5 +1,5 @@
 resource "incus_network_acl" "incusbr1_acl" {
-  name = "incusbr1_acl"
+  name = "incusbr1"
   description = "Network ACL to control access to containers"
 
   ingress = [
