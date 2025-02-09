@@ -8,13 +8,21 @@ resource "incus_network" "network" {
 
 # Step 2: Set up routing using null_resource to add routes
 resource "null_resource" "routing" {
+
+  connection {
+    type        = "ssh"
+    host        = "192.168.1.90"        # IP of your mini PC running Incus
+    user        = "intergalactic"        # The SSH user for your mini PC
+    private_key = file("~/.ssh/homelab_ed25519")  # Path to your private key for SSH authentication
+  }
+
   provisioner "remote-exec" {
     inline = [
       "sudo ip route add 192.168.2.0/24 dev incusbr1",
       "sudo ip route add 192.168.1.0/24 dev eno1"  # Adjust eno1 if using a different interface
     ]
 
-    when = "create"  # Run the inline commands during creation
+    when = create  # Run the inline commands during creation
   }
 
   provisioner "remote-exec" {
@@ -23,7 +31,7 @@ resource "null_resource" "routing" {
       "sudo ip route del 192.168.1.0/24"
     ]
 
-    when = "destroy"  # Run the commands during destruction
+    when = destroy  # Run the commands during destruction
   }
 
   triggers = {
