@@ -25,11 +25,6 @@ resource "incus_network_acl" "incusbr1_acl" {
       action     = "allow"
       destination = "192.168.1.0/24"  # Allow outbound traffic to 192.168.1.x (laptop access)
       state      = "enabled"
-    },
-    {
-      action     = "reject"
-      destination = "0.0.0.0/0"  # Drop everything else by default (ensure restricted outbound access)
-      state      = "enabled"
     }
   ]
   depends_on = [incus_network.network]
