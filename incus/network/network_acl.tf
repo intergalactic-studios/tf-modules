@@ -4,27 +4,28 @@ resource "incus_network_acl" "incusbr1_acl" {
 
   ingress = [
     {
-      action = "accept"
+      action = "allow"
       source = "192.168.1.0/24"
-      state  = "NEW"
+      state  = "enabled"
     },
     {
-      action = "drop"
+      action = "reject"
       source = "0.0.0.0/0"  # Drop everything else by default
-      state  = "NEW"
+      state  = "enabled"
     }
   ]
 
   egress = [
     {
-      action = "accept"
+      action = "allow"
       destination = "192.168.1.0/24"
-      state  = "NEW"
+      state  = "enabled"
     },
     {
-      action = "drop"
+      action = "reject"
       destination = "0.0.0.0/0"  # Drop everything else by default
-      state  = "NEW"
+      state  = "enabled"
     }
   ]
+  depends_on = [incus_network.network]
 }
