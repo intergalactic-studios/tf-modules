@@ -15,30 +15,33 @@ resource "null_resource" "routing" {
     user        = "intergalactic"        # The SSH user for your mini PC
     private_key = file("~/.ssh/homelab_ed25519")  # Path to your private key for SSH authentication
   }
-
+  
   provisioner "remote-exec" {
     inline = [
-      "sudo ip route show 192.168.2.0/24 || sudo ip route add 192.168.2.0/24 dev incusbr1",
-      "sudo ip route show 192.168.1.0/24 || sudo ip route add 192.168.1.0/24 dev eno1"  # Adjust eno1 if needed
-    ]
+      # Enable IP forwarding
+      "echo 'net.ipv4.ip_forward=1' | sudo tee /etc/sysctl.d/99-incus.conf",
+      "sudo sysctl --system",
 
-    when = create  # Run the inline commands during creation
+      # Setup NAT with nftables
+      "sudo nft add table inet incus_nat || true",
+      "sudo nft add chain inet incus_nat postrouting { type nat hook postrouting priority 100 \\; } || true",
+      "sudo nft add rule inet incus_nat postrouting ip saddr 192.168.2.0/24 oifname eno1 masquerade || true",
+
+      # Persist nftables rules
+      "echo 'table inet incus_nat { chain postrouting { type nat hook postrouting priority 100; policy accept; ip saddr 192.168.2.0/24 oifname eno1 masquerade } }' | sudo tee /etc/nftables.conf",
+      "sudo systemctl restart nftables"
+    ]
   }
 
+  # Destroy script: Removes NAT and IP forwarding rules
   provisioner "remote-exec" {
+    when = destroy
     inline = [
-      "sudo ip route del 192.168.2.0/24",
-      "sudo ip route del 192.168.1.0/24"
+      "sudo nft delete table inet incus_nat || true",
+      "sudo rm -f /etc/sysctl.d/99-incus.conf",
+      "sudo sysctl --system"
     ]
-
-    when = destroy  # Run the commands during destruction
   }
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  depends_on = [incus_network.network]
 }
 
 # Add route to this network on the local computer
