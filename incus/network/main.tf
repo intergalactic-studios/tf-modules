@@ -19,10 +19,10 @@ resource "null_resource" "nftables_setup" {
     inline = [
       "sudo ip route add 192.168.2.0/24 dev incusbr1 proto static",
       "sudo nft add table inet incus_nat",
-      "sudo nft add chain inet incus_nat postrouting { type nat hook postrouting priority 100 \; }",
+      "sudo nft add chain inet incus_nat postrouting { type nat hook postrouting priority 100 \\; }",
       "sudo nft add rule inet incus_nat postrouting ip saddr 192.168.2.0/24 oifname 'eno1' masquerade",
       "sudo nft add table inet incus_filter",
-      "sudo nft add chain inet incus_filter forward { type filter hook forward priority 0 \; policy drop \; }",
+      "sudo nft add chain inet incus_filter forward { type filter hook forward priority 0 \\; policy drop \\; }",
       "sudo nft add rule inet incus_filter forward ct state related,established accept",
       "sudo nft add rule inet incus_filter forward iifname 'eno1' oifname 'incusbr1' accept",
       "sudo nft add rule inet incus_filter forward iifname 'incusbr1' oifname 'eno1' ip daddr 192.168.1.90 accept",
