@@ -1,4 +1,4 @@
-resource "incus_network" "incusbr0" {
+resource "incus_network" "network" {
   name = var.name
   type = var.type
   description = var.description
