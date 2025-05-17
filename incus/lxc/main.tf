@@ -1,8 +1,20 @@
-resource "incus_container" "lxc" {
-  name      = var.name
-  image     = var.image
-  profiles  = var.profiles
-  ephemeral = var.ephemeral
+resource "incus_instance" "instance" {
+  name        = var.name
+  image       = var.image
+  description = var.description
+  type        = var.type
+  profiles    = var.profiles
+  ephemeral   = var.ephemeral
+  running     = var.running
+
+  config = merge(
+    {
+      "limits.cpu"    = var.limits.cpu
+      "limits.memory" = "${var.limits.memory}MB"
+    },
+    var.cloud_init != null ? { "cloud-init.user-data" = var.cloud_init } : {},
+    var.extra_config
+  )
 
   dynamic "device" {
     for_each = var.devices
@@ -12,10 +24,4 @@ resource "incus_container" "lxc" {
       properties = device.value.properties
     }
   }
-
-  config = {
-    "user.user-data" = file("${path.module}/cloud-init/${var.cloud_init_file}")
-  }
-
-  limits = var.limits
 }
