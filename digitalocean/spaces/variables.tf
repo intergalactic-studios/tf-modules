@@ -13,7 +13,7 @@ variable "acl" {
   type        = string
   default = "private"
   validation {
-      condition     = contains(["private", "public-read"], var.type)
+      condition     = contains(["private", "public-read"], var.acl)
       error_message = "The type must be one of 'private', 'public-read'."
   }
 
@@ -23,8 +23,4 @@ variable "force_destroy" {
   description = "Whether to force destroy the space"
   type        = bool
   default     = false
-  validation {
-      condition     = var.force_destroy == true || var.force_destroy == false
-      error_message = "The force_destroy must be either true or false."
-  }
 }
