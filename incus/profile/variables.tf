@@ -13,3 +13,9 @@ variable "config" {
   type        = map(string)
   
 }
+
+variable "description" {
+  description = "The description of the network"
+  type        = string
+  default     = ""
+}
