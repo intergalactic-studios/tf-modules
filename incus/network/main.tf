@@ -5,6 +5,6 @@ resource "incus_network" "network" {
   config = var.config
 
   provisioner "local-exec" {
-    command = "sudo ip link set ${var.name} up || true"
+    command = "ip link set ${var.name} up || true"
   }
 }
