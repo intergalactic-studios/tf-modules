@@ -12,7 +12,8 @@ resource "incus_instance" "instance" {
       "limits.cpu"    = var.limits.cpu
       "limits.memory" = "${var.limits.memory}MB"
     },
-    var.cloud_init != null ? { "cloud-init.user-data" = var.cloud_init } : {},
+    var.cloud_init != "" ? { "cloud-init.user-data" = var.cloud_init } : {},
+    var.cloud_init != "" ? { "user.user-data" = var.cloud_init } : {}, # Add legacy key
     var.extra_config
   )
 
@@ -23,5 +24,17 @@ resource "incus_instance" "instance" {
       type       = device.value.type
       properties = device.value.properties
     }
+  }
+}
+output "incus_instance_details" {
+  value = {
+    name        = incus_instance.instance.name
+    description = incus_instance.instance.description
+    type        = incus_instance.instance.type
+    profiles    = incus_instance.instance.profiles
+    ephemeral   = incus_instance.instance.ephemeral
+    running     = incus_instance.instance.running
+    config      = incus_instance.instance.config
+    devices     = { for d in incus_instance.instance.device : d.name => d }
   }
 }
