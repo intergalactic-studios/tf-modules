@@ -25,10 +25,10 @@ resource "incus_instance" "this" {
     }
   }
 
-  lifecycle {
-    ignore_changes = [
-      config["cloud-init.user-data"],
-      config["user.user-data"],
-    ]
-  }
+  # lifecycle {
+  #   ignore_changes = [
+  #     config["cloud-init.user-data"],
+  #     config["user.user-data"],
+  #   ]
+  # }
 }
