@@ -72,11 +72,6 @@ variable "disable_public_ipv4" {
     default     = false
 }
 
-variable "enable_backups" {
-    description = "Enable automatic backups for the instance."
-    type        = bool
-    default     = false
-}
 
 variable "enable_ddos_protection" {
     description = "Enable DDoS protection for the instance."
