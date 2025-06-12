@@ -1,4 +1,4 @@
-resource "incus_storage_volume" "volume" {
+resource "incus_storage_volume" "this" {
   name         = var.name
   description  = var.description
   pool         = var.pool
