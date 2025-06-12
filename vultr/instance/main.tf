@@ -1,12 +1,12 @@
 resource "vultr_instance" "this" {
-  hostname             = var.instance_hostname
+  hostname             = var.hostname
   region               = var.region
-  plan                 = var.instance_plan
+  plan                 = var.plan
   os_id                = var.os_id
   iso_id               = var.iso_id
   app_id               = var.app_id
-  label                = var.instance_label
-  tags                 = var.instance_tags
+  label                = var.label
+  tags                 = var.tags
 
   user_data            = var.user_data
   ssh_key_ids          = var.ssh_key_ids
