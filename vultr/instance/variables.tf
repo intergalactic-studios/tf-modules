@@ -27,8 +27,7 @@ variable "ssh_key_ids" {
 
 variable "backups" {
     description = "Enable automatic backups for the instance."
-    type        = bool
-    default     = false
+    type        = string
 }
 
 variable "hostname" {
