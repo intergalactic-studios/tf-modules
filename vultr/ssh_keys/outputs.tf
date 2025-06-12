@@ -5,6 +5,7 @@ output "name" {
 output "ssh_key" {
   description = "The SSH public key."
   value       = vultr_ssh_key.this.ssh_key
+  sensitive = true
 }
 output "id" {
   description = "The ID of the SSH key."

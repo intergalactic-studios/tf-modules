@@ -5,4 +5,5 @@ variable "name" {
 variable "ssh_key" {
   description = "The SSH public key to add."
   type        = string
+  sensitive = true
 }
