@@ -25,5 +25,12 @@ resource "portainer_stack" "this" {
   force_update    = var.force_update
 
   # Common env vars
-  env = var.environment_vars
+  dynamic "env" {
+    for_each = var.environment_vars
+    content {
+      name  = env.value.name
+      value = env.value.value
+    }
+  }
+
 }
