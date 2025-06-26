@@ -18,3 +18,17 @@ variable "secret_data" {
   description = "The data for the secret, base64 encoded."
   type        = string
 }
+
+output "name" {
+  description = "The name of the created secret."
+  value       = portainer_docker_secret.example_secret.name  
+}
+output "id" {
+  description = "The ID of the created secret."
+  value       = portainer_docker_secret.example_secret.id
+}
+output "data" {
+  description = "The data of the created secret."
+  value       = portainer_docker_secret.example_secret.data
+  sensitive = true
+}
