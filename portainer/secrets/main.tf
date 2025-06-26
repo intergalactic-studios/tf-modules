@@ -1,4 +1,4 @@
-resource "portainer_docker_secret" "example_secret" {
+resource "portainer_docker_secret" "this" {
   endpoint_id = var.endpoint_id
   name        = var.secret_name
   data        = var.secret_data
@@ -21,14 +21,14 @@ variable "secret_data" {
 
 output "name" {
   description = "The name of the created secret."
-  value       = portainer_docker_secret.example_secret.name  
+  value       = portainer_docker_secret.this.name  
 }
 output "id" {
   description = "The ID of the created secret."
-  value       = portainer_docker_secret.example_secret.id
+  value       = portainer_docker_secret.this.id
 }
 output "data" {
   description = "The data of the created secret."
-  value       = portainer_docker_secret.example_secret.data
+  value       = portainer_docker_secret.this.data
   sensitive = true
 }
