@@ -1,5 +1,5 @@
 output "name" {
-  value = digitalocean_spaces_bucket.space.name  
+  value = digitalocean_spaces_key.this.name  
 }
 output "access_key" {
   value = digitalocean_spaces_key.this.access_key
