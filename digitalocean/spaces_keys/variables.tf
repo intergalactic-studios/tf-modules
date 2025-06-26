@@ -8,8 +8,8 @@ variable "permission" {
   type        = string
   default     = "read"
   validation {
-      condition     = contains(["read", "fullacess", "readwrite"], var.permission)
-      error_message = "The permission must be one of 'read', 'fullacess', 'readwrite'."
+      condition     = contains(["read", "fullaccess", "readwrite"], var.permission)
+      error_message = "The permission must be one of 'read', 'fullaccess', 'readwrite'."
   }
 }
 variable "bucket_name" {
