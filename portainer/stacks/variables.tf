@@ -74,7 +74,6 @@ variable "environment_vars" {
   type = list(object({
     name  = string
     value = string
-    sensitive = bool
   }))
   default = []
 }
