@@ -30,6 +30,7 @@ resource "portainer_stack" "this" {
     content {
       name  = env.value.name
       value = env.value.value
+      sensitive = env.value.sensitive
     }
   }
 
