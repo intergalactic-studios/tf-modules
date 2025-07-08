@@ -76,4 +76,5 @@ variable "environment_vars" {
     value = string
   }))
   default = []
+  sensitive = true
 }
