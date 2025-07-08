@@ -4,24 +4,8 @@ resource "portainer_docker_network" "this" {
   driver      = var.network_driver
   internal    = var.network_internal
   attachable  = var.network_attachable
-
-  dynamic "options" {
-    for_each = var.network_options != null ? var.network_options : {}
-    content {
-      key   = options.key
-      value = options.value
-    }
-    
-  }
-
-  dynamic "labels" {
-    for_each = var.network_labels != null ? var.network_labels : {}
-    content {
-      key   = labels.key
-      value = labels.value
-    }
-    
-  }
+  options     = var.network_options
+  labels      = var.network_labels
 }
 
 variable "endpoint_id" {
