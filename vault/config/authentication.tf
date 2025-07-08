@@ -5,8 +5,6 @@ resource "vault_auth_backend" "userpass" {
 resource "vault_generic_endpoint" "user_accounts" {
   for_each = { for u in var.vault_users : u.username => u }
 
-  depends_on = [vault_auth_backend.userpass]
-
   path = "auth/userpass/users/${each.value.username}"
   data_json = jsonencode({
     password = each.value.password
