@@ -39,13 +39,9 @@ variable "running" {
 variable "limits" {
   description = "Resource limits"
   type = object({
-    cpu    = number
-    memory = number
+    cpu    = string
+    memory = string
   })
-  default = {
-    cpu    = 2
-    memory = 2048
-  }
 }
 
 variable "devices" {
