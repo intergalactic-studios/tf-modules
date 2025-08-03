@@ -1,0 +1,34 @@
+resource "portainer_docker_secret" "this" {
+  endpoint_id = var.endpoint_id
+  name        = var.secret_name
+  data        = var.secret_data
+    
+
+}
+
+variable "endpoint_id" {
+  description = "The ID of the Portainer endpoint where the secret will be created."
+  type        = string
+}
+variable "secret_name" {
+  description = "The name of the secret to be created."
+  type        = string
+}
+variable "secret_data" {
+  description = "The data for the secret, base64 encoded."
+  type        = string
+}
+
+output "name" {
+  description = "The name of the created secret."
+  value       = portainer_docker_secret.this.name  
+}
+output "id" {
+  description = "The ID of the created secret."
+  value       = portainer_docker_secret.this.id
+}
+output "data" {
+  description = "The data of the created secret."
+  value       = portainer_docker_secret.this.data
+  sensitive = true
+}
