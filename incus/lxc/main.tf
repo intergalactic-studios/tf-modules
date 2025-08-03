@@ -9,8 +9,8 @@ resource "incus_instance" "instance" {
 
   config = merge(
     {
-      "limits.cpu"    = var.limits.cpu
-      "limits.memory" = "${var.limits.memory}MB"
+      "limits.cpu"    = "${var.limits.cpu}"
+      "limits.memory" = "${var.limits.memory}"
     },
     var.cloud_init != "" ? { "cloud-init.user-data" = var.cloud_init } : {},
     var.cloud_init != "" ? { "user.user-data" = var.cloud_init } : {}, # Add legacy key
