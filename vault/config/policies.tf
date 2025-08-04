@@ -1,8 +1,5 @@
-resource "vault_policy" "admin" {
-  name   = "admin"
-  policy = <<EOT
-path "*" {
-  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
-}
-EOT
+resource "vault_policy" "this" {
+  name = var.policy_name
+
+  policy = var.policy_content
 }

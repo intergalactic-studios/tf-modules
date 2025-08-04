@@ -24,6 +24,15 @@ variable "enable_ssh" {
   type        = bool
   default     = false
 }
+
+variable "policy_name" {
+  description = "Name of the policy to create"
+  type        = string
+}
+variable "policy_content" {
+  description = "Content of the policy to create"
+  type        = string  
+}
 # variable "enable_oidc" {
 #   description = "Whether to enable OIDC authentication"
 #   type        = bool
