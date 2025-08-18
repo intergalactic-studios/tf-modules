@@ -1,4 +1,4 @@
-resource "incus_instance" "instance" {
+resource "incus_instance" "this" {
   name        = var.name
   image       = var.image
   description = var.description
@@ -28,13 +28,13 @@ resource "incus_instance" "instance" {
 }
 output "incus_instance_details" {
   value = {
-    name        = incus_instance.instance.name
-    description = incus_instance.instance.description
-    type        = incus_instance.instance.type
-    profiles    = incus_instance.instance.profiles
-    ephemeral   = incus_instance.instance.ephemeral
-    running     = incus_instance.instance.running
-    config      = incus_instance.instance.config
-    devices     = { for d in incus_instance.instance.device : d.name => d }
+    name        = incus_instance.this.name
+    description = incus_instance.this.description
+    type        = incus_instance.this.type
+    profiles    = incus_instance.this.profiles
+    ephemeral   = incus_instance.this.ephemeral
+    running     = incus_instance.this.running
+    config      = incus_instance.this.config
+    devices     = { for d in incus_instance.this.device : d.name => d }
   }
 }

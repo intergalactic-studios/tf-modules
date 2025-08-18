@@ -1,18 +1,38 @@
-output "instance_name" {
-  value       = incus_instance.this.name
-  description = "Instance name"
-}
-
-output "ipv4_address" {
-  value       = try(incus_instance.this.ipv4_address, "")
-  description = "Primary IPv4 address"
-}
-
-output "connection_info" {
-  value = {
-    name = incus_instance.this.name
-    type = incus_instance.this.type
-    ip   = try(incus_instance.this.ipv4_address, "")
+# modules/incus-instance/main.tf
+terraform {
+  required_providers {
+    incus = {
+      source  = "lxc/incus"
+      version = "~> 0.1"
+    }
   }
-  description = "Connection details for Ansible"
+}
+
+resource "incus_instance" "this" {
+  name     = var.name
+  image    = var.image
+  type     = var.type
+  profiles = var.profiles
+  running  = true
+
+  config = merge(
+    {
+      "limits.cpu"    = var.limits.cpu
+      "limits.memory" = var.limits.memory
+    },
+    var.limits.disk != null ? { "limits.disk" = var.limits.disk } : {},
+    var.cloud_init_config != null ? {
+      "cloud-init.user-data" = base64encode(var.cloud_init_config)
+    } : {},
+    var.extra_config
+  )
+
+  dynamic "device" {
+    for_each = var.devices
+    content {
+      name       = device.value.name
+      type       = device.value.type
+      properties = device.value.properties
+    }
+  }
 }
